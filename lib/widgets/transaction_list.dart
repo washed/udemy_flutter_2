@@ -4,13 +4,14 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _transactions;
+  final Function _deleteTx;
 
-  TransactionList(this._transactions);
+  TransactionList(this._transactions, this._deleteTx);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 400,
       child: _transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -50,50 +51,13 @@ class TransactionList extends StatelessWidget {
                     subtitle: Text(
                       DateFormat.yMMMd().format(_transactions[index].date),
                     ),
-                    trailing: null,
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () => _deleteTx(_transactions[index].id),
+                    ),
                   ),
                 );
-                /*
-                return Card(
-                    elevation: 10,
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 2,
-                            ),
-                          ),
-                          child: Text(
-                            '\$${_transactions[index].amount.toStringAsFixed(2)}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              _transactions[index].title,
-                              style: Theme.of(context).textTheme.title,
-                            ),
-                            Text(
-                                DateFormat.yMd()
-                                    .format(_transactions[index].date),
-                                style: TextStyle(color: Colors.grey)),
-                          ],
-                        )
-                      ],
-                    ));
-                    */
               },
               itemCount: _transactions.length,
             ),
